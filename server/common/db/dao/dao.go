@@ -4,6 +4,7 @@ import (
 	"customermanager-go/server/common/db/po"
 	"customermanager-go/server/common/logger"
 	"github.com/go-xorm/xorm"
+	"time"
 )
 
 var Operator daoImpl
@@ -25,6 +26,7 @@ type daoInter interface {
 	AddLoginAuth(session *xorm.Session, loginAuth *po.LoginAuth) error
 	UpdateTimeByAuth(session *xorm.Session, loginAuth *po.LoginAuth) (bool, error)
 	DeleteLoginAuth(session *xorm.Session, loginAuth *po.LoginAuth) error
+	DeleteExpireLoginAuth(session *xorm.Session, expireTime time.Time) error
 }
 
 func (d *daoImpl) AddCustomer(session *xorm.Session, customer *po.Customer) error {
@@ -109,5 +111,10 @@ func (d *daoImpl) UpdateTimeByAuth(session *xorm.Session, loginAuth *po.LoginAut
 
 func (d *daoImpl) DeleteLoginAuth(session *xorm.Session, loginAuth *po.LoginAuth) error {
 	_, err := session.Delete(loginAuth)
+	return err
+}
+
+func (d *daoImpl) DeleteExpireLoginAuth(session *xorm.Session, expireTime time.Time) error {
+	_, err := session.Where("updateTime <= ?", expireTime).Delete(po.LoginAuth{})
 	return err
 }

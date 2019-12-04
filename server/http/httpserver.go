@@ -6,6 +6,7 @@ import (
 	"customermanager-go/server/common/db"
 	"customermanager-go/server/common/db/dao"
 	"customermanager-go/server/common/db/po"
+	error2 "customermanager-go/server/common/error"
 	"customermanager-go/server/common/logger"
 	"customermanager-go/server/common/resultcode"
 	"customermanager-go/server/common/utils"
@@ -126,10 +127,16 @@ func loader(c *gin.Context, route Router) {
 
 	if err != nil {
 		logger.Error("handle error, error: %s", err.Error())
+		code := resultcode.SystemInternalException
+		message := resultcode.ResultMessage[resultcode.SystemInternalException]
+		if _, ok := err.(error2.BaseError); ok {
+			code = err.(error2.BaseError).Code
+			message = err.(error2.BaseError).Message
+		}
 
 		c.AbortWithStatusJSON(http.StatusOK, &api.BaseResponse{
-			Code:    resultcode.SystemInternalException,
-			Message: resultcode.ResultMessage[resultcode.SystemInternalException],
+			Code:    code,
+			Message: message,
 		})
 		return
 	}
