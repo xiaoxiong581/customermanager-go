@@ -2,9 +2,9 @@ package http
 
 import (
 	"context"
-	"github.com/gin-gonic/gin"
 	"customermanager-go/api"
 	"customermanager-go/server/customer"
+	"github.com/gin-gonic/gin"
 )
 
 const (
@@ -14,8 +14,17 @@ const (
 	DELETE = "delete"
 	PATCH  = "patch"
 
-	BASE_URL = "/customermanager/v1/customer"
+	BASE_URL     = "/customermanager/v1/customer"
+	LOGIN_URL    = BASE_URL + "/auth/login"
+	LOGOUT_URL   = BASE_URL + "/auth/logout"
+	REGISTER_URL = BASE_URL + "/auth/register"
 )
+
+var AuthExcludeUrls = map[string]bool{
+	LOGIN_URL:    true,
+	LOGOUT_URL:   true,
+	REGISTER_URL: true,
+}
 
 type httpHandler func(ctx context.Context, c *gin.Context) (api.BaseResponse, error)
 
@@ -27,8 +36,8 @@ type Router struct {
 
 var (
 	Routes = []Router{
-		{Method: POST, Pattern: BASE_URL + "/auth/login", Func: customer.Login},
-		{Method: POST, Pattern: BASE_URL + "/auth/logout", Func: customer.Logout},
-		{Method: POST, Pattern: BASE_URL + "/auth/register", Func: customer.Register},
+		{Method: POST, Pattern: LOGIN_URL, Func: customer.Login},
+		{Method: POST, Pattern: LOGOUT_URL, Func: customer.Logout},
+		{Method: POST, Pattern: REGISTER_URL, Func: customer.Register},
 	}
 )
