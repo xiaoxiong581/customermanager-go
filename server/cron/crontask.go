@@ -14,7 +14,7 @@ var existTime = flag.Duration("tokenExistTime", 10, "token exist time")
 
 func StartCrontab() {
 	crontab := NewCrontab()
-	if err := crontab.AddJob("cleanExpireLoginAuthCron", "* */1 * * *", cleanExpireLoginAuthCron); err != nil {
+	if err := crontab.AddJob("cleanExpireLoginAuthCron", "@every 1m", cleanExpireLoginAuthCron); err != nil {
 		logger.Error("add cleanExpireLoginAuthCron fail, error: %s", err.Error())
 	}
 
