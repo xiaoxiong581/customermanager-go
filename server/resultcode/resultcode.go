@@ -5,6 +5,7 @@ const (
 	SystemInternalException  = "102"
 	UserAuthFail             = "103"
 	RequestIllegal           = "104"
+	RestError                = "105"
 	CustomerNotExist         = "10000"
 	UserNameOrPasswordError  = "10001"
 	CustomerNameAlreadyExist = "10002"
@@ -17,6 +18,7 @@ var ResultMessage = map[string]string{
 	SystemInternalException:  "system internal exception",
 	UserAuthFail:             "user auth fail",
 	RequestIllegal:           "request illegal, error: %s",
+	RestError:                "send rest to third error",
 	CustomerNotExist:         "customer not exist",
 	UserNameOrPasswordError:  "userName or password error",
 	CustomerNameAlreadyExist: "customerName %s already exist",

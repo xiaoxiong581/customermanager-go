@@ -1,8 +1,8 @@
 package dao
 
 import (
-	"customermanager-go/server/common/db/po"
-	"customermanager-go/server/common/logger"
+	"customermanager-go/server/db/po"
+	"customermanager-go/server/logger"
 	"github.com/go-xorm/xorm"
 	"time"
 )

@@ -1,9 +1,9 @@
 package cron
 
 import (
-	"customermanager-go/server/common/db"
-	"customermanager-go/server/common/db/dao"
-	"customermanager-go/server/common/logger"
+	"customermanager-go/server/db"
+	"customermanager-go/server/db/dao"
+	"customermanager-go/server/logger"
 	"flag"
 	"time"
 )

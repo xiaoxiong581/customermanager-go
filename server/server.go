@@ -2,10 +2,10 @@ package main
 
 import (
 	"context"
-	"customermanager-go/server/common/cron"
-	"customermanager-go/server/common/db"
-	"customermanager-go/server/common/logger"
+	"customermanager-go/server/cron"
+	"customermanager-go/server/db"
 	"customermanager-go/server/http"
+	"customermanager-go/server/logger"
 	"flag"
 	"fmt"
 	"os"
