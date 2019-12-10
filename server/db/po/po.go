@@ -4,6 +4,9 @@ import (
 	"time"
 )
 
+/**
+ * generate by xorm tool, like: xorm reverse -s mysql root:xiaoxiong581@tcp\(192.168.137.106:3306\)/merchant?charset=utf8 templates/goxorm
+ */
 type Customer struct {
 	Customerid   string    `xorm:"not null pk comment('用户Id') VARCHAR(64)"`
 	Customername string    `xorm:"not null comment('用户名') unique VARCHAR(128)"`

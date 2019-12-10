@@ -10,11 +10,9 @@ import (
 
 const TIME_FORMAT = "2006-01-02 15:04:05.999"
 
-var existTime = flag.Duration("tokenExistTime", 10, "token exist time")
-
 func StartCrontab() {
 	crontab := NewCrontab()
-	if err := crontab.AddJob("cleanExpireLoginAuthCron", "@every 1m", cleanExpireLoginAuthCron); err != nil {
+	if err := crontab.Add("cleanExpireLoginAuthCron", "@every 1m", cleanExpireLoginAuthCron); err != nil {
 		logger.Error("add cleanExpireLoginAuthCron fail, error: %s", err.Error())
 	}
 
@@ -25,6 +23,7 @@ func cleanExpireLoginAuthCron() {
 	session := db.Engine.NewSession()
 	defer session.Close()
 
+	existTime := flag.Duration("tokenExistTime", 10, "token exist time")
 	expireTime := time.Now().Add(-time.Minute * *existTime)
 	logger.Info("begin to delete expire login auth, expireTime: %s", expireTime.Format(TIME_FORMAT))
 	dao.Operator.DeleteExpireLoginAuth(session, expireTime)

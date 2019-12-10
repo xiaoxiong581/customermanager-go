@@ -11,8 +11,6 @@ import (
 var Engine *xorm.Engine
 
 const (
-	//DB_HEALTH_CHECK_INTERFAL = 10
-	//DB_PING_TIMEOUT          = 10
 	DEFAULT_ALLOWED_PACKET = 16 * 1024 * 1024
 )
 

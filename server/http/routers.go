@@ -3,7 +3,7 @@ package http
 import (
 	"context"
 	"customermanager-go/api"
-	"customermanager-go/server/service/customer"
+	"customermanager-go/server/service"
 	"github.com/gin-gonic/gin"
 )
 
@@ -36,8 +36,8 @@ type Router struct {
 
 var (
 	Routes = []Router{
-		{Method: POST, Pattern: LOGIN_URL, Func: customer.Login},
-		{Method: POST, Pattern: LOGOUT_URL, Func: customer.Logout},
-		{Method: POST, Pattern: REGISTER_URL, Func: customer.Register},
+		{Method: POST, Pattern: LOGIN_URL, Func: service.Login},
+		{Method: POST, Pattern: LOGOUT_URL, Func: service.Logout},
+		{Method: POST, Pattern: REGISTER_URL, Func: service.Register},
 	}
 )

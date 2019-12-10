@@ -7,28 +7,28 @@ import (
 	"sync"
 )
 
-type Crontab struct {
+type crontab struct {
 	mutex sync.Mutex
 	cron  *cron.Cron
 	ids   map[string]cron.EntryID
 }
 
-func NewCrontab() *Crontab {
-	return &Crontab{
+func NewCrontab() *crontab {
+	return &crontab{
 		cron: cron.New(),
 		ids:  make(map[string]cron.EntryID),
 	}
 }
 
-func (c *Crontab) Start() {
+func (c *crontab) Start() {
 	c.cron.Start()
 }
 
-func (c *Crontab) Stop() {
+func (c *crontab) Stop() {
 	c.cron.Stop()
 }
 
-func (c *Crontab) AddJob(id string, cronExp string, job interface{}) error {
+func (c *crontab) Add(id string, cronExp string, job interface{}) error {
 	c.mutex.Lock()
 	defer c.mutex.Unlock()
 
@@ -55,6 +55,25 @@ func (c *Crontab) AddJob(id string, cronExp string, job interface{}) error {
 		return err
 	}
 	c.ids[id] = entryId
-
+	logger.Info("add cron %s success", id)
 	return nil
+}
+
+func (c *crontab) del(id string) {
+	if _, ok := c.ids[id]; !ok {
+		logger.Warn("cron %s is not exist", id)
+		return
+	}
+	c.mutex.Lock()
+	defer c.mutex.Unlock()
+
+	entryId, ok := c.ids[id]
+	if !ok {
+		logger.Warn("cron %s is not exist", id)
+		return
+	}
+
+	c.cron.Remove(entryId)
+	delete(c.ids, id)
+	logger.Info("delete cron %s success", id)
 }
