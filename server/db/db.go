@@ -14,10 +14,6 @@ const (
 	DEFAULT_ALLOWED_PACKET = 16 * 1024 * 1024
 )
 
-func GetEngine() *xorm.Engine {
-	return Engine
-}
-
 func InitEngine(dbString string, maxAllowedPacket int) error {
 	var err error
 	if maxAllowedPacket < DEFAULT_ALLOWED_PACKET {

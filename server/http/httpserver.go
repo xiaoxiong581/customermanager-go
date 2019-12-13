@@ -105,7 +105,14 @@ func loader(c *gin.Context, route Router) {
 	reqBody := make(map[string]interface{})
 	reqBodyBytes, _ := ioutil.ReadAll(c.Request.Body)
 	c.Request.Body = ioutil.NopCloser(bytes.NewReader(reqBodyBytes))
-	err := json.NewDecoder(bytes.NewReader(reqBodyBytes)).Decode(&reqBody)
+	if err := json.NewDecoder(bytes.NewReader(reqBodyBytes)).Decode(&reqBody); err != nil {
+		logger.Error("decode request body error, err: %s", err.Error())
+		c.AbortWithStatusJSON(http.StatusOK, &api.BaseResponse{
+			Code:    resultcode.SystemInternalException,
+			Message: resultcode.ResultMessage[resultcode.SystemInternalException],
+		})
+		return
+	}
 
 	sessionIDData, ok := reqBody[SessionKey]
 	if ok {
@@ -115,15 +122,11 @@ func loader(c *gin.Context, route Router) {
 		}
 	}
 	ctx := utils.NewContext(sessionID, "")
-	logger.Info("[server] get request, time: %s, method: %s, path: %s, url: %s, reqBody: %s, decodeRequestBodyResult: %s", startTime, method, path, url, reqBody, err)
-
-	c.Keys = map[string]interface{}{}
-	c.Keys["reqBodyBytes"] = reqBodyBytes
-	c.Keys["reqBody"] = reqBody
+	logger.Info("[server] get request, time: %s, method: %s, path: %s, url: %s, reqBody: %s", startTime, method, path, url, reqBody)
 
 	res, err := handlerFunc(ctx, c)
 	handleEndTime := time.Now()
-	logger.Info("[server] handle end, method: %s, path: %s, url: %s, start_time: %s, end_time: %s, func_handle_time: %d, handle_time_unit: %s, response: %s, error: %s, http_status_code: %d", method, path, url, startTime.Format(TimeFormat), handleEndTime.Format(TimeFormat), (handleEndTime.UnixNano()-startTime.UnixNano())/1000000, "ms", res, err, http.StatusOK)
+	logger.Info("[server] handle end, method: %s, path: %s, url: %s, start_time: %s, end_time: %s, handle_time: %dms, response: %+v", method, path, url, startTime.Format(TimeFormat), handleEndTime.Format(TimeFormat), (handleEndTime.UnixNano()-startTime.UnixNano())/1000000, res)
 
 	if err != nil {
 		logger.Error("handle error, error: %s", err.Error())

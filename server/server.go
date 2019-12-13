@@ -10,6 +10,8 @@ import (
 	"fmt"
 	"os"
 	"os/signal"
+	"path/filepath"
+	"strings"
 	"time"
 )
 
@@ -34,13 +36,18 @@ func main() {
 		Port: *port,
 	})
 
+	appRootPath, _ := os.Getwd()
+	logger.Info("get app root path: %s", appRootPath)
+	crtPath := strings.Join([]string{appRootPath, "config", "cert", "server.crt"}, string(filepath.Separator))
+	keyPath := strings.Join([]string{appRootPath, "config", "cert", "server.key"}, string(filepath.Separator))
+
 	go func() {
-		if err := httpServer.ListenAndServe(); err != nil {
+		if err := httpServer.ListenAndServeTLS(crtPath, keyPath); err != nil {
 			logger.Error("listen http server fail, error: %s", err.Error())
 		}
 	}()
 
-	cron.StartCrontab()
+	cron.StartCron()
 
 	quit := make(chan os.Signal, 1)
 	signal.Notify(quit, os.Interrupt)
