@@ -2,8 +2,8 @@ package http
 
 import (
 	"context"
-	"customermanager-go/api"
 	"customermanager-go/server/service"
+	"customermanager-go/server/service/api"
 	"github.com/gin-gonic/gin"
 )
 

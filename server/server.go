@@ -2,10 +2,11 @@ package main
 
 import (
 	"context"
+	db2 "customermanager-go/common/db"
+	"customermanager-go/common/logger"
 	"customermanager-go/server/cron"
-	"customermanager-go/server/db"
 	"customermanager-go/server/http"
-	"customermanager-go/server/logger"
+	"customermanager-go/server/rpc"
 	"flag"
 	"fmt"
 	"os"
@@ -16,7 +17,8 @@ import (
 )
 
 const (
-	APIName = "customermanager-go"
+	APP_NAME = "customermanager-go"
+	VERSION  = "v1"
 )
 
 var (
@@ -25,10 +27,13 @@ var (
 )
 
 func main() {
+	logger.StartLogger("customermanager-go.log", "info")
 	dbString := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=utf8&timeout=10s&loc=Local&parseTime=true", "root", "xiaoxiong581", "192.168.137.106", 3306, "merchant")
-	if err := db.InitEngine(dbString, 16*1024*1024); err != nil {
+	if err := db2.InitEngine(dbString, 16*1024*1024); err != nil {
 		logger.Error("fail to init db, error: %s", err.Error())
 	}
+
+	rpc.InitMicro(APP_NAME, VERSION)
 
 	//serverCtx := utils.NewContext(utils.NewUUID(), "")
 	httpServer := http.NewHttpServer(&http.ServerConfig{

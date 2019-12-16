@@ -2,13 +2,13 @@ package http
 
 import (
 	"bytes"
-	"customermanager-go/api"
-	"customermanager-go/server/db"
+	db2 "customermanager-go/common/db"
+	error2 "customermanager-go/common/error"
+	"customermanager-go/common/logger"
 	"customermanager-go/server/db/dao"
 	"customermanager-go/server/db/po"
-	error2 "customermanager-go/server/error"
-	"customermanager-go/server/logger"
 	"customermanager-go/server/resultcode"
+	"customermanager-go/server/service/api"
 	"customermanager-go/server/utils"
 	"encoding/json"
 	"fmt"
@@ -153,7 +153,7 @@ func userAuth(customerId string, token string) (bool, error) {
 		return false, nil
 	}
 
-	session := db.Engine.NewSession()
+	session := db2.Engine.NewSession()
 	defer session.Close()
 
 	loginAuth := &po.LoginAuth{

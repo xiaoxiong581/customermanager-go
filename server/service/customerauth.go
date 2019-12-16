@@ -2,13 +2,13 @@ package service
 
 import (
 	"context"
-	"customermanager-go/api"
+	"customermanager-go/common/db"
+	"customermanager-go/common/logger"
 	"customermanager-go/server/constant"
-	"customermanager-go/server/db"
 	"customermanager-go/server/db/dao"
 	"customermanager-go/server/db/po"
-	"customermanager-go/server/logger"
 	"customermanager-go/server/resultcode"
+	"customermanager-go/server/service/api"
 	"customermanager-go/server/utils"
 	"fmt"
 	"github.com/gin-gonic/gin"
@@ -27,6 +27,18 @@ func Login(ctx context.Context, c *gin.Context) (api.BaseResponse, error) {
 			Data:    nil,
 		}, nil
 	}
+
+	/* // test go-micro framework
+	   authRequest := &auth.AuthRequest{
+	       CustomerId: req.UserName,
+	       Token:      req.Password,
+	   }
+	   authResponse, err := rpc.AuthClient.Auth(ctx, authRequest)
+	   if err != nil {
+	       logger.Error("send rpc to auth failed, %s", err.Error())
+	       return api.BaseResponse{}, err
+	   }
+	   logger.Info("receive auth reponse, %+v", authResponse)*/
 
 	session := db.Engine.NewSession()
 	defer session.Close()

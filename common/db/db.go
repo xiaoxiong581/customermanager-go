@@ -1,7 +1,7 @@
 package db
 
 import (
-	"customermanager-go/server/logger"
+	"customermanager-go/common/logger"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/go-xorm/xorm"
 	"strconv"

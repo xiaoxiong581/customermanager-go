@@ -4,6 +4,9 @@ import (
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 	"gopkg.in/natefinch/lumberjack.v2"
+	"os"
+	"path/filepath"
+	"strings"
 )
 
 var logger *zap.SugaredLogger
@@ -25,12 +28,14 @@ func getLoggerLevel(lvl string) zapcore.Level {
 	return zapcore.InfoLevel
 }
 
-func init() {
-	fileName := "./customermanager-go.log"
-	level := getLoggerLevel("info")
+func StartLogger(relativePath string, logLevel string) {
+	appRootPath, _ := os.Getwd()
+	fileName := strings.Join([]string{appRootPath, "log", relativePath}, string(filepath.Separator))
+	level := getLoggerLevel(logLevel)
 	syncWriter := zapcore.AddSync(&lumberjack.Logger{
 		Filename:  fileName,
-		MaxSize:   104857600,
+		MaxSize:   100,
+		MaxAge:    7,
 		LocalTime: true,
 		Compress:  true,
 	})

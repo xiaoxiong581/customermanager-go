@@ -2,8 +2,8 @@ package http
 
 import (
 	"bytes"
-	error2 "customermanager-go/server/error"
-	"customermanager-go/server/logger"
+	error2 "customermanager-go/common/error"
+	"customermanager-go/common/logger"
 	"customermanager-go/server/resultcode"
 	"encoding/json"
 	"io/ioutil"

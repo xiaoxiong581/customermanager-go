@@ -1,8 +1,8 @@
 package cron
 
 import (
-	error2 "customermanager-go/server/error"
-	"customermanager-go/server/logger"
+	error2 "customermanager-go/common/error"
+	"customermanager-go/common/logger"
 	"github.com/robfig/cron/v3"
 	"sync"
 )
