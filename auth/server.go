@@ -7,6 +7,8 @@ import (
 	"customermanager-go/common/proto/rpc/auth"
 	"fmt"
 	"github.com/micro/go-micro"
+	"github.com/micro/go-micro/registry"
+	"github.com/micro/go-micro/registry/consul"
 )
 
 const (
@@ -22,7 +24,10 @@ func main() {
 		logger.Error("fail to init db, error: %s", err.Error())
 	}
 
-	service := micro.NewService(micro.Name(APP_NAME), micro.Version(VERSION), micro.Address("127.0.0.1:49636"))
+	reg := consul.NewRegistry(func(options *registry.Options) {
+		options.Addrs = []string{"127.0.0.1:8500"}
+	})
+	service := micro.NewService(micro.Name(APP_NAME), micro.Version(VERSION), micro.Registry(reg), micro.Address("127.0.0.1:60984"))
 	service.Init()
 	auth.RegisterAuthServiceHandler(service.Server(), new(service2.AuthService))
 

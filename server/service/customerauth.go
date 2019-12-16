@@ -28,17 +28,17 @@ func Login(ctx context.Context, c *gin.Context) (api.BaseResponse, error) {
 		}, nil
 	}
 
-	/* // test go-micro framework
-	   authRequest := &auth.AuthRequest{
-	       CustomerId: req.UserName,
-	       Token:      req.Password,
-	   }
-	   authResponse, err := rpc.AuthClient.Auth(ctx, authRequest)
-	   if err != nil {
-	       logger.Error("send rpc to auth failed, %s", err.Error())
-	       return api.BaseResponse{}, err
-	   }
-	   logger.Info("receive auth reponse, %+v", authResponse)*/
+	/*// test go-micro framework
+	  authRequest := &auth.AuthRequest{
+	      CustomerId: req.UserName,
+	      Token:      req.Password,
+	  }
+	  authResponse, err := rpc.AuthClient.Auth(ctx, authRequest)
+	  if err != nil {
+	      logger.Error("send rpc to auth failed, %s", err.Error())
+	      return api.BaseResponse{}, err
+	  }
+	  logger.Info("receive auth reponse, %+v", authResponse)*/
 
 	session := db.Engine.NewSession()
 	defer session.Close()
