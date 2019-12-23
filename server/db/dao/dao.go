@@ -24,7 +24,7 @@ type daoInter interface {
 
 	// t_login_auth
 	AddLoginAuth(session *xorm.Session, loginAuth *po.LoginAuth) error
-	UpdateTimeByAuth(session *xorm.Session, loginAuth *po.LoginAuth) (bool, error)
+	UpdateTimeByAuth(session *xorm.Session, loginAuth *po.LoginAuth) (int64, error)
 	DeleteLoginAuth(session *xorm.Session, loginAuth *po.LoginAuth) error
 	DeleteExpireLoginAuth(session *xorm.Session, expireTime time.Time) error
 }
