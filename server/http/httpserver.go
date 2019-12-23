@@ -2,7 +2,7 @@ package http
 
 import (
 	"bytes"
-	db2 "customermanager-go/common/db"
+	"customermanager-go/common/db"
 	error2 "customermanager-go/common/error"
 	"customermanager-go/common/logger"
 	"customermanager-go/server/db/dao"
@@ -132,9 +132,9 @@ func loader(c *gin.Context, route Router) {
 		logger.Error("handle error, error: %s", err.Error())
 		code := resultcode.SystemInternalException
 		message := resultcode.ResultMessage[resultcode.SystemInternalException]
-		if _, ok := err.(error2.BaseError); ok {
-			code = err.(error2.BaseError).Code
-			message = err.(error2.BaseError).Message
+		if baseError, ok := err.(error2.BaseError); ok {
+			code = baseError.Code
+			message = baseError.Message
 		}
 
 		c.AbortWithStatusJSON(http.StatusOK, &api.BaseResponse{
@@ -153,7 +153,7 @@ func userAuth(customerId string, token string) (bool, error) {
 		return false, nil
 	}
 
-	session := db2.Engine.NewSession()
+	session := db.Engine.NewSession()
 	defer session.Close()
 
 	loginAuth := &po.LoginAuth{
